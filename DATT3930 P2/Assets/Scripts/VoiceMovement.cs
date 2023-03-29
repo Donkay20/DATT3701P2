@@ -16,7 +16,9 @@ public class VoiceMovement : MonoBehaviour
 
     public Interactions interactionsScript;
 
-    private Animation anim;
+    public Animator anim;
+
+    public ParticleSystem ps;
 
     void Start()
     {
@@ -25,8 +27,8 @@ public class VoiceMovement : MonoBehaviour
         //keywords for speech recognition --> words you want objects to respond to
         actions.Add("i love you", love);
         actions.Add("jump", Jump);
-        actions.Add("up", Up);
-        actions.Add("down", Down);
+        actions.Add("roll over", RollOver);
+        actions.Add("speak", Speak); // "hello" "hi" ?
         actions.Add("right", Right);
         actions.Add("left", Left);
 
@@ -48,21 +50,22 @@ public class VoiceMovement : MonoBehaviour
     private void love()
     {
         interactionsScript.happinessBar.fillAmount += interactionsScript.fillAmountHappy;
+        ps.Play();
     }
 
     private void Jump()
     {
-
+        // jump animation
     }
 
-    private void Up()
+    private void RollOver()
     {
-        transform.Translate(0, 1, 0);
+        // roll over animation
     }
 
-    private void Down()
+    private void Speak()
     {
-        transform.Translate(0, -1, 0);
+        //play sound
     }
 
     private void Right()
