@@ -17,15 +17,16 @@ public class Interactions : MonoBehaviour
     public int affection;
     public float fillAmountHappy;
 
-    /*
-    public Image cleanlinessBar;
-    public int maxCleanliness;
-    public float fillAmountClean;
-    */
-
     // put models for pet here
     public GameObject pet;
     public GameObject evolvedPet;
+
+    // models of food
+    public GameObject foodFull;
+    public GameObject foodHalf;
+    public GameObject foodEmpty;
+
+    public bool startFeed;
 
     // how many times the pet has grown
     public int growth;
@@ -35,8 +36,8 @@ public class Interactions : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hungerBar.fillAmount = 0.5f;
-        feed = maxHunger / 2;
+        hungerBar.fillAmount = 0f;
+        feed = 0;
 
         happinessBar.fillAmount = 0f;
         affection = 0;
@@ -44,7 +45,10 @@ public class Interactions : MonoBehaviour
         evolvedPet.SetActive(false);
         growth = 0;
 
-     //   cleanlinessBar.fillAmount = 1;
+        foodFull.SetActive(false);
+        foodHalf.SetActive(false);
+        startFeed = false;
+
 
     }
 
@@ -57,8 +61,39 @@ public class Interactions : MonoBehaviour
     public void Feed()
     {
         // every time the button is pressed, pet will be fed and bar will increase
-        hungerBar.fillAmount += fillAmountHunger;
-        feed++;
+        // controls the food models --> when they appear relative to now much pet ate
+        if (startFeed)
+        {
+            // when they can start feeding bar will fill up and corresponding models will be set
+            hungerBar.fillAmount += fillAmountHunger;
+            feed++;
+
+            if (feed < 5)
+            {
+                foodEmpty.SetActive(false);
+                foodFull.SetActive(true);
+
+            } else if (feed >= maxHunger)
+            {
+                foodHalf.SetActive(false);
+                foodEmpty.SetActive(true);
+                startFeed = false;
+
+            } else
+            {
+                foodFull.SetActive(false);
+                foodHalf.SetActive(true);
+            }
+        } else if (!startFeed && feed <=5)
+        {
+           // the first time they press feed (and if the hunger meter if half or less than half)
+           // the bowl will fill with food and they can start feeding
+            startFeed = true;
+            foodEmpty.SetActive(false);
+            foodFull.SetActive(true);
+            feed = 0;
+        }
+       
     }
 
     public void Play()
